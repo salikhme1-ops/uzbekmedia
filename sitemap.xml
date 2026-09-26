@@ -1,8 +1,254 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url>
-<loc>https://uzbekmedia.netlify.app/</loc>
-<changefreq>daily</changefreq>
-<priority>1.0</priority>
-</url>
-</urlset>
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uzbek Media</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#0f0f0f;color:#fff;padding-bottom:80px;transition:background .3s,color .3s}
+body.light{background:#f0f0f0;color:#111}
+header{background:#1a1a1a;padding:15px;position:sticky;top:0;z-index:10;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+body.light header{background:#fff}
+.top-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+header h1{font-size:20px}
+#themeBtn{background:#2a2a2a;color:#fff;border:none;padding:8px 12px;border-radius:8px;font-size:18px;cursor:pointer}
+body.light #themeBtn{background:#ddd;color:#111}
+#search{width:100%;padding:12px;border-radius:8px;border:none;background:#2a2a2a;color:#fff;font-size:14px;margin-bottom:10px}
+body.light #search{background:#e0e0e0;color:#111}
+.janrlar{display:flex;gap:8px;overflow-x:auto;padding-bottom:5px;scrollbar-width:none}
+.janrlar::-webkit-scrollbar{display:none}
+.janr-btn{background:#2a2a2a;color:#ccc;border:none;padding:8px 15px;border-radius:20px;font-size:13px;white-space:nowrap;cursor:pointer}
+body.light .janr-btn{background:#ddd;color:#333}
+.janr-btn.active{background:#f5c518;color:#111;font-weight:bold}
+#kinolar,#kinolar-sevimli{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:15px}
+.kino-card{background:#1a1a1a;border-radius:10px;overflow:hidden;transition:transform .2s;position:relative}
+body.light .kino-card{background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.1)}
+.kino-card:active{transform:scale(.97)}
+.poster{width:100%;aspect-ratio:2/3;background:#2a2a2a;overflow:hidden;position:relative;cursor:pointer}
+.poster img{width:100%;height:100%;object-fit:cover;display:block}
+.yangi-badge{position:absolute;top:8px;left:8px;background:#e50914;color:#fff;font-size:10px;padding:3px 8px;border-radius:5px;font-weight:bold}
+.reyting{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.8);color:#f5c518;font-size:12px;padding:3px 8px;border-radius:5px;font-weight:bold}
+.davom-badge{position:absolute;bottom:8px;left:8px;background:rgba(229,9,20,.9);color:#fff;font-size:11px;padding:3px 8px;border-radius:5px;font-weight:bold}
+.kino-card h3{font-size:13px;padding:8px 8px 4px;cursor:pointer}
+.kino-card p{font-size:11px;color:#888;padding:0 8px 10px;cursor:pointer}
+.sevimli-btn{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.6);border:none;font-size:18px;padding:4px 8px;border-radius:50%;cursor:pointer;z-index:5}
+.sevimli-btn.active{background:rgba(229,9,20,.9)}
+.bolim-nomi{padding:15px 15px 5px;font-size:18px;font-weight:bold}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.95);z-index:100;overflow-y:auto;padding:20px}
+.modal.active{display:block}
+.modal-content{background:#1a1a1a;border-radius:12px;padding:20px;max-width:500px;margin:40px auto;position:relative}
+body.light .modal-content{background:#fff}
+.close{position:absolute;top:10px;right:15px;font-size:24px;color:#fff;cursor:pointer;font-weight:bold;z-index:5}
+body.light .close{color:#111}
+.video-box{width:100%;background:#000;border-radius:10px;overflow:hidden;margin-bottom:10px;position:relative}
+.video-box video{width:100%;display:block;max-height:250px}
+.skip-indicator{position:absolute;top:50%;right:20px;transform:translateY(-50%);background:rgba(0,0,0,.7);color:#fff;padding:10px 15px;border-radius:10px;font-size:16px;font-weight:bold;display:none}
+.skip-indicator.active{display:block;animation:fadeOut 1s}
+@keyframes fadeOut{0%,70%{opacity:1}100%{opacity:0}}
+.sifat-box{display:flex;justify-content:space-between;align-items:center;padding:8px 0;gap:10px}
+.sifat-box label{font-size:13px;color:#aaa}
+.sifat-box select{background:#2a2a2a;color:#fff;border:none;padding:8px 12px;border-radius:8px;font-size:13px;cursor:pointer;flex:1}
+body.light .sifat-box select{background:#ddd;color:#111}
+.tezlik-info{font-size:11px;color:#666;text-align:center;padding:5px 0}
+.vaqt-box{display:flex;justify-content:space-between;font-size:12px;color:#aaa;padding:5px 0 10px}
+.davom-btn{width:100%;background:#f5c518;color:#111;border:none;padding:10px;border-radius:8px;font-size:14px;font-weight:bold;cursor:pointer;margin-bottom:15px}
+.saqla-btn{width:100%;background:#2a2a2a;color:#fff;border:none;padding:10px;border-radius:8px;font-size:13px;cursor:pointer;margin-top:10px}
+body.light .saqla-btn{background:#ddd;color:#111}
+#modal-nom{font-size:20px;margin-bottom:8px}
+#modal-info{color:#f5c518;font-size:14px;margin-bottom:10px}
+#modal-reyting{color:#f5c518;font-size:14px;margin-bottom:10px}
+#modal-tavsif{color:#ccc;font-size:14px;line-height:1.6;margin-bottom:15px}
+body.light #modal-tavsif{color:#555}
+.treyler-btn{display:block;width:100%;background:#e50914;color:#fff;border:none;padding:12px;border-radius:8px;font-size:14px;font-weight:bold;cursor:pointer;text-align:center;text-decoration:none}
+.bottom-nav{position:fixed;bottom:0;left:0;width:100%;background:#1a1a1a;display:flex;justify-content:space-around;padding:10px 0;border-top:1px solid #2a2a2a;z-index:50}
+body.light .bottom-nav{background:#fff;border-top:1px solid #ddd}
+.nav-btn{background:none;border:none;color:#888;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
+.nav-btn.active{color:#f5c518}
+.nav-btn span:first-child{font-size:20px}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<header>
+<div class="top-row">
+<h1>🎬 Uzbek Media</h1>
+<button id="themeBtn" onclick="toggleTheme()">🌙</button>
+</div>
+<input type="text" id="search" placeholder="Kino qidirish...">
+<div class="janrlar" id="janrlar">
+<button class="janr-btn active" onclick="filtr('hammasi', this)">Hammasi</button>
+<button class="janr-btn" onclick="filtr('Aksiya', this)">Aksiya</button>
+<button class="janr-btn" onclick="filtr('Drama', this)">Drama</button>
+<button class="janr-btn" onclick="filtr('Fantastika', this)">Fantastika</button>
+<button class="janr-btn" onclick="filtr('Animatsiya', this)">Animatsiya</button>
+</div>
+</header>
+
+<div id="sahifa-bosh">
+<div class="bolim-nomi">🆕 Yangi kinolar</div>
+<main id="kinolar"></main>
+</div>
+
+<div id="sahifa-sevimli" class="hidden">
+<div class="bolim-nomi">❤️ Sevimlilar</div>
+<main id="kinolar-sevimli"></main>
+</div>
+
+<div id="modal" class="modal">
+<div class="modal-content">
+<span class="close" onclick="yopish()">✕</span>
+<div class="video-box" id="videoBox">
+<video id="videoPlayer" controls preload="metadata"></video>
+<div class="skip-indicator" id="skipIndicator">⏩ +15s</div>
+</div>
+<div class="sifat-box">
+<label>🎞 Sifat:</label>
+<select id="sifatSelect" onchange="sifatOzgartir()">
+<option value="auto">Avtomatik</option>
+<option value="360">360p</option>
+<option value="480">480p</option>
+<option value="720">720p</option>
+<option value="1080">1080p</option>
+</select>
+</div>
+<div class="tezlik-info" id="tezlikInfo"></div>
+<div class="vaqt-box">
+<span id="vaqtJoriy">00:00</span>
+<span id="vaqtUmumiy">00:00</span>
+</div>
+<button id="davomBtn" class="davom-btn hidden" onclick="davomEt()">▶ Davom etish</button>
+<h2 id="modal-nom"></h2>
+<p id="modal-info"></p>
+<p id="modal-reyting"></p>
+<p id="modal-tavsif"></p>
+<button class="saqla-btn" onclick="vaqtniSaqla()">💾 Vaqtni saqlash</button>
+<a id="modal-treyler" class="treyler-btn" href="#" target="_blank" style="margin-top:10px;">▶ YouTube'da ko'rish</a>
+</div>
+</div>
+
+<div class="bottom-nav">
+<button class="nav-btn active" onclick="sahifa('bosh', this)">
+<span>🏠</span><span>Bosh</span>
+</button>
+<button class="nav-btn" onclick="sahifa('sevimli', this)">
+<span>❤️</span><span>Sevimli</span>
+</button>
+</div>
+
+<script>
+// ===== VIDEOLAR: Archive.org havolalari =====
+const VIDEOLAR = {
+  "O'rgimchak Odam: Multiolam": { 480: "https://archive.org/download/uzbekmedia/VID_20260724_001540_534.mp4" },
+  "O'rgimchak Odam: Uyga Yo'l Yo'q": { 480: "https://archive.org/download/uzbekmedia/VID_20260724_001540_534.mp4" },
+  "Interstellar": { 480: "https://archive.org/download/uzbekmedia/VID_20260724_001540_534.mp4" },
+  "Dune": { 480: "https://archive.org/download/uzbekmedia/VID_20260724_001540_534.mp4" },
+  "Joker": { 480: "https://archive.org/download/uzbekmedia/VID_20260724_001540_534.mp4" },
+  "Titanic": { 480: "https://archive.org/download/uzbekmedia/VID_20260724_001540_534.mp4" }
+};
+
+const kinolar = [
+{ nom: "O'rgimchak Odam: Multiolam", yil: 2023, janr: "Animatsiya", reyting: 8.6, yangi: true, rasm: "https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg", tavsif: "Miles Morales multiolam bo'ylab sayohat qiladi.", treyler: "https://www.youtube.com/results?search_query=spider+man+across+the+spider+verse+trailer" },
+{ nom: "O'rgimchak Odam: Uyga Yo'l Yo'q", yil: 2021, janr: "Aksiya", reyting: 8.2, yangi: false, rasm: "https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg", tavsif: "Piter Parker multiolamni buzadi.", treyler: "https://www.youtube.com/results?search_query=spider+man+no+way+home+trailer" },
+{ nom: "Interstellar", yil: 2014, janr: "Fantastika", reyting: 8.7, yangi: false, rasm: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg", tavsif: "Kosmos bo'ylab sayohat.", treyler: "https://www.youtube.com/results?search_query=interstellar+trailer" },
+{ nom: "Dune", yil: 2021, janr: "Fantastika", reyting: 8.0, yangi: true, rasm: "https://image.tmdb.org/t/p/w500/d5NXSklXo0qyIYkgV94XAgMIckC.jpg", tavsif: "Pol Atreydes cho'l sayyorasida.", treyler: "https://www.youtube.com/results?search_query=dune+trailer" },
+{ nom: "Joker", yil: 2019, janr: "Drama", reyting: 8.4, yangi: false, rasm: "https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg", tavsif: "Artur Flek Jokerga aylanadi.", treyler: "https://www.youtube.com/results?search_query=joker+trailer" },
+{ nom: "Titanic", yil: 1997, janr: "Drama", reyting: 7.9, yangi: false, rasm: "https://image.tmdb.org/t/p/w500/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg", tavsif: "Titanik kemasida muhabbat.", treyler: "https://www.youtube.com/results?search_query=titanic+trailer" }
+];
+
+let sevimlilar = JSON.parse(localStorage.getItem('sevimlilar') || '[]');
+let davomVaqtlari = JSON.parse(localStorage.getItem('davomVaqtlari') || '{}');
+let sifatTanlov = localStorage.getItem('sifatTanlov') || 'auto';
+let joriyJanr = 'hammasi';
+let joriyKinoIndex = null;
+
+function vaqtFormat(sek){if(!sek||isNaN(sek))return'00:00';const m=Math.floor(sek/60);const s=Math.floor(sek%60);return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')}
+
+function tezlikAniqla(){
+const c=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+if(!c)return{tezlik:'480',nom:"Aniqlanmadi, 480p"};
+const t=c.effectiveType||'';const mb=c.downlink||0;
+if(t==='slow-2g'||t==='2g'||mb<.5)return{tezlik:'360',nom:"🐢 Sekin (2G), 360p"};
+if(t==='3g'||mb<2)return{tezlik:'480',nom:"📶 O'rtacha (3G), 480p"};
+if(t==='4g'&&mb>=10)return{tezlik:'1080',nom:"⚡ Juda tez, 1080p"};
+if(t==='4g'||mb>=2)return{tezlik:'720',nom:"🚀 Tez (4G), 720p"};
+return{tezlik:'480',nom:"Aniqlanmadi, 480p"}
+}
+
+function renderKinolar(list, cid){
+const c=document.getElementById(cid);c.innerHTML='';
+if(list.length===0){c.innerHTML='<p style="padding:20px;color:#888;">Kino topilmadi</p>';return}
+list.forEach(k=>{
+const sev=sevimlilar.includes(k.nom);
+const davom=davomVaqtlari[k.nom];
+const div=document.createElement('div');div.className='kino-card';
+const poster=document.createElement('div');poster.className='poster';
+poster.onclick=()=>ochish(kinolar.indexOf(k));
+poster.innerHTML=`<img src="${k.rasm}" alt="${k.nom}">${k.yangi?'<span class="yangi-badge">YANGI</span>':''}<span class="reyting">⭐ ${k.reyting}</span>${davom?`<span class="davom-badge">▶ ${vaqtFormat(davom)}</span>`:''}`;
+const sb=document.createElement('button');sb.className='sevimli-btn'+(sev?' active':'');sb.textContent=sev?'❤️':'🤍';
+sb.onclick=(e)=>{e.stopPropagation();e.preventDefault();sevimliToggle(k.nom)};poster.appendChild(sb);
+const h3=document.createElement('h3');h3.textContent=k.nom;h3.onclick=()=>ochish(kinolar.indexOf(k));
+const p=document.createElement('p');p.textContent=k.yil+' • '+k.janr;p.onclick=()=>ochish(kinolar.indexOf(k));
+div.appendChild(poster);div.appendChild(h3);div.appendChild(p);c.appendChild(div)})}
+
+function filtrla(){
+const q=document.getElementById('search').value.toLowerCase();
+const n=kinolar.filter(k=>{const mn=k.nom.toLowerCase().includes(q)||k.janr.toLowerCase().includes(q)||k.yil.toString().includes(q);const mj=joriyJanr==='hammasi'||k.janr===joriyJanr;return mn&&mj});
+renderKinolar(n,'kinolar')}
+document.getElementById('search').addEventListener('input',filtrla);
+function filtr(j,b){joriyJanr=j;document.querySelectorAll('.janr-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');filtrla()}
+function sevimliToggle(nom){const i=sevimlilar.indexOf(nom);if(i>-1)sevimlilar.splice(i,1);else sevimlilar.push(nom);localStorage.setItem('sevimlilar',JSON.stringify(sevimlilar));filtrla();renderSevimlilar()}
+function renderSevimlilar(){const s=kinolar.filter(k=>sevimlilar.includes(k.nom));renderKinolar(s,'kinolar-sevimli')}
+
+function videoYukla(nom,sifat){
+const v=document.getElementById('videoPlayer');const vids=VIDEOLAR[nom];if(!vids)return;
+let ts=sifat;
+if(sifat==='auto'){const a=tezlikAniqla();ts=a.tezlik;document.getElementById('tezlikInfo').textContent=a.nom}
+else{document.getElementById('tezlikInfo').textContent='🎞 Qo\'lda: '+sifat+'p'}
+const m=vids[ts]||vids[480]||vids[360]||'';
+if(m){v.src=m;v.load()}else{v.removeAttribute('src');v.load();document.getElementById('tezlikInfo').textContent='⚠️ Video hali qo\'shilmagan'}}
+
+function sifatOzgartir(){
+const s=document.getElementById('sifatSelect').value;sifatTanlov=s;localStorage.setItem('sifatTanlov',s);
+if(joriyKinoIndex!==null){const k=kinolar[joriyKinoIndex];const v=document.getElementById('videoPlayer');const vt=v.currentTime;const p=!v.paused;videoYukla(k.nom,s);
+v.addEventListener('loadedmetadata',function f(){v.currentTime=vt;if(p)v.play();v.removeEventListener('loadedmetadata',f)})}}
+
+function ochish(i){
+joriyKinoIndex=i;const k=kinolar[i];
+document.getElementById('modal-nom').textContent=k.nom;
+document.getElementById('modal-info').textContent=k.yil+' • '+k.janr;
+document.getElementById('modal-reyting').textContent='⭐ Reyting: '+k.reyting;
+document.getElementById('modal-tavsif').textContent=k.tavsif;
+document.getElementById('modal-treyler').href=k.treyler;
+document.getElementById('sifatSelect').value=sifatTanlov;
+videoYukla(k.nom,sifatTanlov);
+const db=document.getElementById('davomBtn');const sv=davomVaqtlari[k.nom];
+if(sv&&sv>5){db.classList.remove('hidden');db.textContent='▶ Davom etish: '+vaqtFormat(sv)}else{db.classList.add('hidden')}
+document.getElementById('modal').classList.add('active')}
+
+function davomEt(){const k=kinolar[joriyKinoIndex];const v=document.getElementById('videoPlayer');v.currentTime=davomVaqtlari[k.nom]||0;v.play();document.getElementById('davomBtn').classList.add('hidden')}
+function vaqtniSaqla(){const k=kinolar[joriyKinoIndex];const v=document.getElementById('videoPlayer');davomVaqtlari[k.nom]=v.currentTime;localStorage.setItem('davomVaqtlari',JSON.stringify(davomVaqtlari));alert('✅ Vaqt saqlandi: '+vaqtFormat(v.currentTime));filtrla()}
+
+const videoEl=document.getElementById('videoPlayer');
+videoEl.addEventListener('timeupdate',()=>{document.getElementById('vaqtJoriy').textContent=vaqtFormat(videoEl.currentTime)});
+videoEl.addEventListener('loadedmetadata',()=>{document.getElementById('vaqtUmumiy').textContent=vaqtFormat(videoEl.duration)});
+videoEl.addEventListener('pause',()=>{if(joriyKinoIndex!==null){const k=kinolar[joriyKinoIndex];if(videoEl.currentTime>5){davomVaqtlari[k.nom]=videoEl.currentTime;localStorage.setItem('davomVaqtlari',JSON.stringify(davomVaqtlari))}}});
+
+let oxirgiBosish=0;
+const videoBox=document.getElementById('videoBox');
+const skipIndicator=document.getElementById('skipIndicator');
+videoBox.addEventListener('click',(e)=>{if(e.target.tagName==='VIDEO'||e.target===videoBox){const h=Date.now();if(h-oxirgiBosish<400){videoEl.currentTime=Math.min(videoEl.currentTime+15,videoEl.duration);skipIndicator.classList.add('active');setTimeout(()=>skipIndicator.classList.remove('active'),1000);oxirgiBosish=0}else{oxirgiBosish=h}}});
+
+function yopish(){const v=document.getElementById('videoPlayer');v.pause();document.getElementById('modal').classList.remove('active');filtrla();renderSevimlilar()}
+function toggleTheme(){document.body.classList.toggle('light');const b=document.getElementById('themeBtn');b.textContent=document.body.classList.contains('light')?'☀️':'🌙';localStorage.setItem('tema',document.body.classList.contains('light')?'light':'dark')}
+if(localStorage.getItem('tema')==='light'){document.body.classList.add('light');document.getElementById('themeBtn').textContent='☀️'}
+
+function sahifa(n,b){document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+if(n==='bosh'){document.getElementById('sahifa-bosh').classList.remove('hidden');document.getElementById('sahifa-sevimli').classList.add('hidden')}
+else{document.getElementById('sahifa-bosh').classList.add('hidden');document.getElementById('sahifa-sevimli').classList.remove('hidden');renderSevimlilar()}}
+
+renderKinolar(kinolar,'kinolar');
+renderSevimlilar();
+</script>
+</body>
+</html>
